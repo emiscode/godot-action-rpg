@@ -6,6 +6,8 @@ export var acceleration = 5
 
 var velocity = Vector2()
 
+onready var animationPlayer = $AnimationPlayer
+
 func get_input():
 	var input = Vector2.ZERO
 	var input_right = Input.get_action_strength("ui_right")
@@ -22,8 +24,13 @@ func _physics_process(delta):
 	var direction = get_input()
 	
 	if direction != Vector2.ZERO:
+		if direction.x > 0:
+			animationPlayer.play("RunRight")
+		else:
+			animationPlayer.play("RunLeft") 
 		velocity = lerp(velocity, direction.normalized() * speed, acceleration * delta)
 	else:
+		animationPlayer.play("IdleRight")
 		velocity = lerp(velocity, Vector2.ZERO, friction * delta)
 	
 	velocity = move_and_slide(velocity)
